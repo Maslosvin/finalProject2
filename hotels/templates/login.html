@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+{% load static %}
+<html class="htmlLogin" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/stylesheet.css' %}" type="text/css">
+    <link rel="icon" href="{% static 'ico/favicon.ico' %}" type="image/x-icon">
+    <title>Вход</title>
+</head>
+<body>
+
+<header>
+    <h1 class="loginText">Вход</h1>
+</header>
+
+<main>
+    <form method="POST" class="formLogin">
+    {% csrf_token %}
+    <fieldset>
+        <label for="id_username" class="username-input">{{ form.username.label }}</label>
+        {{ form.username }}
+        <label for="id_password" class="password-input">{{ form.password.label }}</label>
+        {{ form.password }}
+    </fieldset>
+    <button class="loginJoinBtn" type="submit">Войти</button>
+    </form>
+</main>
+
+<footer>
+    <div class="smallRegisterBtn">
+        <small>
+            <a href="{% url 'register' %}">Регистрация</a>
+        </small>
+    </div>
+</footer>
+
+</body>
+</html>

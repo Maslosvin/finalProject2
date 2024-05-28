@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+{% load static %}
+<html class="htmlReserveHotel" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'ico/favicon.ico' %}" type="image/x-icon">
+    <title>Поиск отеля</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/stylesheet.css' %}" type="text/css">
+</head>
+<body>
+
+<form class="reserveHotelFields" method="POST" action="{% url 'reserve-hotel' %}">
+    {% csrf_token %}
+    <input type="text" name="search_query" class="search_hotel">
+    <input type="date" name="check_in_date" class="check_in_date" value="{{ form.check_in_date.value }}">
+    <input type="date" name="check_out_date" class="check_out_date" value="{{ form.check_out_date.value }}">
+    <input type="number" name="guest_count" class="guest_count" value="{{ form.guest_count.value }}">
+    <button type="submit" name="find" class="search_hotel_button">Найти</button>
+</form>
+
+
+
+        {% if hotels %}
+<h1 class="hotelInfoText">Информация об отеле:</h1>
+
+<div class="hotelInfo">
+        {% for room in hotels %}
+    <ul>
+            <li>Название: {{ room.hotel_name }}</li>
+            <br>
+            <li>Кол-в квадратных метров: {{ room.capacity }}</li>
+            <br>
+            <li>Цена за день: {{ room.price }}</li>
+            <br>
+            <li>Рейтинг: {{ room.rating }}</li>
+            <br>
+            <li>Дата въезда: {{ re }}</li>
+    </ul>
+
+<!--     <form action="{% url 'payment-page' %}" method="post">-->
+<!--        {% csrf_token %}-->
+<!--       <input  type="submit" value="Забронировать" class="bookingBtn">-->
+<!--    </form>-->
+
+    <form action="{% url 'payment-page' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="room_id" value="{{ room.id }}">
+        <input type="hidden" name="check_in_date" value="{{ check_in_date }}">
+        <input type="hidden" name="check_out_date" value="{{ check_out_date }}">
+        <input type="hidden" name="guest_count" value="{{ guest_count }}">
+    <!-- Другие поля формы -->
+    <button type="submit" class="bookingBtn">Забронировать</button>
+    </form>
+
+        {% endfor %}
+        {% else %}
+        Не найдено
+        {% endif %}
+</div>
+{% if totalprice %}
+   <p class="totalPrice">Итоговая цена: {{ totalprice }}</p>
+{% endif %}
+
+</body>
+</html>
